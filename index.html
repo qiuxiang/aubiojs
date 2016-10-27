@@ -1,0 +1,6 @@
+<!doctype html>
+<script src="build/aubio.js"></script>
+<script>
+  var pitchDetector = new Module.PitchDetector('default', 2048, 44100)
+  pitchDetector.detect([1, 2, 3])
+</script>
