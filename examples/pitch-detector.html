@@ -1,33 +1,39 @@
 <!doctype html>
-<style>
-html {
-  height: 100%;
-}
+<html>
+<head>
+  <title>Pitch Detector</title>
+  <style>
+  html {
+    height: 100%;
+  }
 
-body {
-  margin: 0;
-  height: 100%;
-}
+  body {
+    margin: 0;
+    height: 100%;
+  }
 
-canvas {
-  position: absolute;
-  top: 0;
-}
+  canvas {
+    position: absolute;
+    top: 0;
+  }
 
-#pitch {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 5vw;
-}
-</style>
+  #pitch {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 5vw;
+  }
+  </style>
+</head>
+<body>
 <div id="pitch"></div>
 <canvas></canvas>
 <script src="../build/aubio.js"></script>
 <script>
 var audioContext = new AudioContext()
 var analyser = audioContext.createAnalyser()
+analyser.fftSize = 8192
 var audioBuffer = new Float32Array(analyser.fftSize)
 var pitchDetector = new (Module().PitchDetector)(
       'default', analyser.fftSize, 1, audioContext.sampleRate)
@@ -76,3 +82,5 @@ function process() {
   count += 1
 }
 </script>
+</body>
+</html>
