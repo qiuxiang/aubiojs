@@ -1,0 +1,26 @@
+<!doctype html>
+<div id="pitch"></div>
+<script src="../build/aubio.js"></script>
+<script>
+var audioContext = new AudioContext()
+var analyser = audioContext.createAnalyser()
+var audioBuffer = new Float32Array(analyser.fftSize)
+var pitchDetector = new (Module().PitchDetector)(
+  'default', analyser.fftSize, 1, audioContext.sampleRate)
+var $pitch = document.querySelector('#pitch')
+
+navigator.mediaDevices.getUserMedia({audio: true}).then(function (stream) {
+  audioContext.createMediaStreamSource(stream).connect(analyser)
+})
+
+process()
+function process() {
+  requestAnimationFrame(process)
+  analyser.getFloatTimeDomainData(audioBuffer)
+  var frequency = pitchDetector.getPitch(audioBuffer)
+  console.log(frequency)
+  if (frequency) {
+    $pitch.innerHTML = frequency.toFixed(1) + ' Hz'
+  }
+}
+</script>
