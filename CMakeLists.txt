@@ -19,14 +19,14 @@ set(source_files
   ${PROJECT_SOURCE_DIR}/aubio/src/fvec.c
   ${PROJECT_SOURCE_DIR}/aubio/src/lvec.c
   ${PROJECT_SOURCE_DIR}/aubio/src/mathutils.c
-  ${PROJECT_SOURCE_DIR}/pitch_detector.cc)
+  ${PROJECT_SOURCE_DIR}/src/pitch_detector.cc)
 
 set(emscripten /usr/local/Cellar/emscripten/1.36.5/libexec)
 set(CMAKE_C_COMPILER ${emscripten}/emcc)
 set(CMAKE_CXX_COMPILER ${emscripten}/em++)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Oz -s EXPORTED_RUNTIME_METHODS=[] -s ELIMINATE_DUPLICATE_FUNCTIONS=1 -s MODULARIZE=1 --memory-init-file 0 --closure 1 --llvm-lto 1 --bind")
 
-include_directories(.)
+include_directories(src)
 include_directories(aubio/src)
 include_directories(${emscripten}/system/include)
 
