@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+  <title>Tempo Detector</title>
+  <style>
+  .beats {
+    width: 160px;
+    height: 160px;
+    line-height: 160px;
+    text-align: center;
+    font-size: 32px;
+    border: 1px solid;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    box-sizing: border-box;
+  }
+
+  .beat {
+    width: 100%;
+    height: 100%;
+    border: 1px solid;
+    border-radius: 50%;
+    box-sizing: border-box;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .beat.active {
+    transition: 1s all ease-out;
+    transform: scale(4);
+    opacity: 0;
+  }
+  </style>
+</head>
+<body>
+<div class="beats">
+  <div id="bpm">0</div>
+  <div class="beat"></div>
+  <div class="beat"></div>
+  <div class="beat"></div>
+  <div class="beat"></div>
+</div>
+<script src="../build/aubio.js"></script>
+<script>
+var audioContext = new AudioContext()
+var scriptProcessor = audioContext.createScriptProcessor(512, 1, 1)
+var aubioTempo = new (Module().AubioTempo)(
+      'default', scriptProcessor.bufferSize * 4, scriptProcessor.bufferSize, audioContext.sampleRate)
+scriptProcessor.connect(audioContext.destination)
+scriptProcessor.addEventListener('audioprocess', function (event) {
+  if (aubioTempo.do(event.inputBuffer.getChannelData(0))) {
+    console.log(aubioTempo.getConfidence())
+    beat(aubioTempo.getBpm())
+  }
+})
+
+var audio = new Audio()
+audio.controls = true
+audio.crossOrigin = 'anonymous'
+audio.src = 'http://mr3.doubanio.com/6a5e3a25b0d3e83de566da701dc78536/1/fm/song/p632099_128k.mp3'
+document.body.appendChild(audio)
+
+var audioSource = audioContext.createMediaElementSource(audio)
+audioSource.connect(scriptProcessor)
+audioSource.connect(audioContext.destination)
+
+var active = -1
+var $bpm = document.querySelector('#bpm')
+var $beats = document.querySelectorAll('.beat')
+for (let i = 0; i < $beats.length; i += 1) {
+  $beats[i].addEventListener('webkitTransitionEnd', function () {
+    this.classList.remove('active')
+  })
+}
+
+function beat(bpm) {
+  active = (active + 1) % $beats.length
+  $beats[active].classList.add('active')
+  $bpm.innerHTML = parseInt(bpm)
+}
+</script>
+</body>
+</html>
