@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-  <title>Pitch Detector</title>
+  <title>Aubio Pitch</title>
   <style>
   html {
     height: 100%;
@@ -35,7 +35,7 @@ var audioContext = new AudioContext()
 var analyser = audioContext.createAnalyser()
 analyser.fftSize = 8192
 var audioBuffer = new Float32Array(analyser.fftSize)
-var pitchDetector = new (Module().PitchDetector)(
+var pitchDetector = new (Module().AubioPitch)(
       'default', analyser.fftSize, 1, audioContext.sampleRate)
 var $canvas = document.querySelector('canvas')
 var canvasContext = $canvas.getContext('2d')
@@ -65,7 +65,7 @@ function process() {
   requestAnimationFrame(process)
   analyser.getFloatTimeDomainData(audioBuffer)
 
-  var frequency = pitchDetector.getPitch(audioBuffer)
+  var frequency = pitchDetector.do(audioBuffer)
   var x = count % $canvas.width
 
   canvasContext.beginPath()

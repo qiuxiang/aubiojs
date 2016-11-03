@@ -3,20 +3,20 @@
 
 using namespace emscripten;
 
-class PitchDetector {
+class AubioPitch {
 public:
-  PitchDetector(std::string method, int buf_size, int hop_size, int sample_rate) {
+  AubioPitch(std::string method, int buf_size, int hop_size, int sample_rate) {
     buffer = new_fvec(buf_size);
     aubio_pitch = new_aubio_pitch(method.c_str(), buf_size, hop_size, sample_rate);
   }
 
-  ~PitchDetector() {
+  ~AubioPitch() {
     del_aubio_pitch(aubio_pitch);
     del_fvec(buffer);
     del_fvec(output);
   }
 
-  float getPitch(val input) {
+  float Do(val input) {
     for (int i = 0; i < buffer->length; i += 1) {
       buffer->data[i] = input[i].as<float>();
     }
@@ -31,7 +31,7 @@ private:
 };
 
 EMSCRIPTEN_BINDINGS(aubio) {
-  class_<PitchDetector>("PitchDetector")
+  class_<AubioPitch>("AubioPitch")
     .constructor<std::string, int, int, int>()
-    .function("getPitch", &PitchDetector::getPitch);
+    .function("do", &AubioPitch::Do);
 }

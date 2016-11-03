@@ -28,7 +28,7 @@ set(source_files
   ${PROJECT_SOURCE_DIR}/aubio/src/lvec.c
   ${PROJECT_SOURCE_DIR}/aubio/src/mathutils.c
   ${PROJECT_SOURCE_DIR}/src/tempo.cc
-  ${PROJECT_SOURCE_DIR}/src/pitch_detector.cc)
+  ${PROJECT_SOURCE_DIR}/src/pitch.cc)
 
 set(emscripten /usr/local/Cellar/emscripten/1.36.5/libexec)
 set(CMAKE_C_COMPILER ${emscripten}/emcc)
