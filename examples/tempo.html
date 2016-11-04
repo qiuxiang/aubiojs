@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Aubio Tempo</title>
   <style>
   .beats {
@@ -58,7 +59,7 @@
 </div>
 <script src="../build/aubio.js"></script>
 <script>
-var audioContext = new AudioContext()
+var audioContext = new (window.AudioContext || window.webkitAudioContext)()
 var scriptProcessor = audioContext.createScriptProcessor(512, 1, 1)
 var aubioTempo = new (Module().AubioTempo)(
       'default', scriptProcessor.bufferSize * 4, scriptProcessor.bufferSize, audioContext.sampleRate)
@@ -83,7 +84,7 @@ audioSource.connect(audioContext.destination)
 var active = -1
 var $bpm = document.querySelector('#bpm')
 var $beats = document.querySelectorAll('.beat')
-for (let i = 0; i < $beats.length; i += 1) {
+for (var i = 0; i < $beats.length; i += 1) {
   $beats[i].addEventListener('webkitTransitionEnd', function () {
     this.classList.remove('active')
   })

@@ -31,10 +31,9 @@
 <canvas></canvas>
 <script src="../build/aubio.js"></script>
 <script>
-var audioContext = new AudioContext()
+var audioContext = new (window.AudioContext || window.webkitAudioContext)()
 var analyser = audioContext.createAnalyser()
-analyser.fftSize = 8192
-var audioBuffer = new Float32Array(analyser.fftSize)
+var audioBuffer = new Uint8Array(analyser.fftSize)
 var pitchDetector = new (Module().AubioPitch)(
       'default', analyser.fftSize, 1, audioContext.sampleRate)
 var $canvas = document.querySelector('canvas')
@@ -63,7 +62,7 @@ process()
 
 function process() {
   requestAnimationFrame(process)
-  analyser.getFloatTimeDomainData(audioBuffer)
+  analyser.getByteTimeDomainData(audioBuffer)
 
   var frequency = pitchDetector.do(audioBuffer)
   var x = count % $canvas.width
