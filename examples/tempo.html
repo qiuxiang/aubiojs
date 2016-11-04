@@ -74,7 +74,8 @@ scriptProcessor.addEventListener('audioprocess', function (event) {
 var audio = new Audio()
 audio.controls = true
 audio.crossOrigin = 'anonymous'
-audio.src = 'http://mr3.doubanio.com/6a5e3a25b0d3e83de566da701dc78536/1/fm/song/p632099_128k.mp3'
+audio.src = 'http://mr1.doubanio.com/e586b3b26b25c3b6b1590061a462f2e0/0/fm/song/p291930_128k.mp4'
+audio.play()
 document.body.appendChild(audio)
 
 var audioSource = audioContext.createMediaElementSource(audio)
