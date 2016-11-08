@@ -5,7 +5,7 @@ using namespace emscripten;
 
 class AubioTempo {
 public:
-  AubioTempo(std::string method, int buf_size, int hop_size, int sample_rate) {
+  AubioTempo(std::string method, uint_t buf_size, uint_t hop_size, uint_t sample_rate) {
     buffer = new_fvec(hop_size);
     aubio_tempo = new_aubio_tempo(method.c_str(), buf_size, hop_size, sample_rate);
   }
@@ -40,7 +40,7 @@ private:
 
 EMSCRIPTEN_BINDINGS(AubioTempo) {
   class_<AubioTempo>("AubioTempo")
-    .constructor<std::string, int, int, int>()
+    .constructor<std::string, uint_t, uint_t, uint_t>()
     .function("do", &AubioTempo::Do)
     .function("getBpm", &AubioTempo::GetBpm)
     .function("getConfidence", &AubioTempo::GetConfidence);

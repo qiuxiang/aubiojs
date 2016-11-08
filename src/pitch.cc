@@ -5,7 +5,7 @@ using namespace emscripten;
 
 class AubioPitch {
 public:
-  AubioPitch(std::string method, int buf_size, int hop_size, int sample_rate) {
+  AubioPitch(std::string method, uint_t buf_size, uint_t hop_size, uint_t sample_rate) {
     buffer = new_fvec(buf_size);
     aubio_pitch = new_aubio_pitch(method.c_str(), buf_size, hop_size, sample_rate);
   }
@@ -30,8 +30,8 @@ private:
   fvec_t *output = new_fvec(1);
 };
 
-EMSCRIPTEN_BINDINGS(aubio) {
+EMSCRIPTEN_BINDINGS(AubioPitch) {
   class_<AubioPitch>("AubioPitch")
-    .constructor<std::string, int, int, int>()
+    .constructor<std::string, uint_t, uint_t, uint_t>()
     .function("do", &AubioPitch::Do);
 }
