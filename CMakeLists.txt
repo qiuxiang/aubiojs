@@ -27,6 +27,7 @@ set(source_files
   ${PROJECT_SOURCE_DIR}/aubio/src/fvec.c
   ${PROJECT_SOURCE_DIR}/aubio/src/lvec.c
   ${PROJECT_SOURCE_DIR}/aubio/src/mathutils.c
+  ${PROJECT_SOURCE_DIR}/src/fft.cc
   ${PROJECT_SOURCE_DIR}/src/tempo.cc
   ${PROJECT_SOURCE_DIR}/src/pitch.cc)
 
