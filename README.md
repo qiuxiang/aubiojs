@@ -15,8 +15,7 @@ var pitch = aubioTempo.do(audioBuffer)
 ```
 
 ## Build
-This project uses [emscripten](https://github.com/kripken/emscripten) to compile aubio,
-so before you start building, you need to have emscripten.
+This project uses [emscripten](https://github.com/kripken/emscripten) to compile aubio, make sure you have installed.
 
 ```
 cd build
