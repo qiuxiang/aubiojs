@@ -6,26 +6,29 @@
 </head>
 <body>
 <div><canvas></canvas></div>
-<script src="../build/aubio.js"></script>
+<script src="aubio.js"></script>
 <script>
 var audioContext = new (window.AudioContext || window.webkitAudioContext)()
 var scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1)
-var aubioFFT = new (Module().AubioFFT)(scriptProcessor.bufferSize)
+var aubioFFT
 var canvas = document.querySelector('canvas')
 canvas.width = document.body.clientWidth
 var canvasContext = canvas.getContext('2d')
 
 scriptProcessor.connect(audioContext.destination)
-scriptProcessor.addEventListener('audioprocess', function (event) {
-  var spectrum = aubioFFT.forward(event.inputBuffer.getChannelData(0))
-  var dataLength = parseInt(spectrum.norm.length * 0.25)
-  var barWidth = canvas.width / dataLength
-  canvasContext.clearRect(0, 0, canvas.width, canvas.height)
-  spectrum.norm.reduce(function (x, value, index) {
-    canvasContext.fillStyle = 'hsl(' + (index * 360 / dataLength) + ', 100%, 50%)'
-    canvasContext.fillRect(x, canvas.height - value, barWidth, value)
-    return x + barWidth
-  }, 0)
+Module().then(function (module) {
+  aubioFFT = new module.AubioFFT(scriptProcessor.bufferSize)
+  scriptProcessor.addEventListener('audioprocess', function (event) {
+    var spectrum = aubioFFT.forward(event.inputBuffer.getChannelData(0))
+    var dataLength = parseInt(spectrum.norm.length * 0.25)
+    var barWidth = canvas.width / dataLength
+    canvasContext.clearRect(0, 0, canvas.width, canvas.height)
+    spectrum.norm.reduce(function (x, value, index) {
+      canvasContext.fillStyle = 'hsl(' + (index * 360 / dataLength) + ', 100%, 50%)'
+      canvasContext.fillRect(x, canvas.height - value, barWidth, value)
+      return x + barWidth
+    }, 0)
+  })
 })
 
 var audio = new Audio()
