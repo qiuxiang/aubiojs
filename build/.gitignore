@@ -1,3 +1,4 @@
 *
 !.gitignore
 !aubio.js
+!aubio.wasm
