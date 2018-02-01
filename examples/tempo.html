@@ -57,18 +57,21 @@
   <div class="beat"></div>
   <div class="beat"></div>
 </div>
-<script src="../build/aubio.js"></script>
+<script src="aubio.js"></script>
 <script>
 var audioContext = new (window.AudioContext || window.webkitAudioContext)()
 var scriptProcessor = audioContext.createScriptProcessor(512, 1, 1)
-var aubioTempo = new (Module().AubioTempo)(
-      'default', scriptProcessor.bufferSize * 4, scriptProcessor.bufferSize, audioContext.sampleRate)
+var aubioTempo
 scriptProcessor.connect(audioContext.destination)
-scriptProcessor.addEventListener('audioprocess', function (event) {
-  if (aubioTempo.do(event.inputBuffer.getChannelData(0))) {
-    console.log(aubioTempo.getConfidence())
-    beat(aubioTempo.getBpm())
-  }
+Module().then(function (module) {
+  aubioTempo = new module.AubioTempo(
+        'default', scriptProcessor.bufferSize * 4, scriptProcessor.bufferSize, audioContext.sampleRate)
+  scriptProcessor.addEventListener('audioprocess', function (event) {
+    if (aubioTempo.do(event.inputBuffer.getChannelData(0))) {
+      console.log(aubioTempo.getConfidence())
+      beat(aubioTempo.getBpm())
+    }
+  })
 })
 
 var audio = new Audio()
