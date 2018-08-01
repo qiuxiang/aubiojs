@@ -33,15 +33,9 @@ set(source_files
   ${PROJECT_SOURCE_DIR}/src/pitch.cc)
 
 add_definitions(-DHAVE_CONFIG_H)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti -DEMSCRIPTEN_HAS_UNBOUND_TYPE_NAMES=0 -fno-exceptions -Oz -s EXPORTED_RUNTIME_METHODS=[] -s MODULARIZE=1 --memory-init-file 0 --closure 1 --llvm-lto 1 --bind -s WASM=1")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DEMSCRIPTEN_HAS_UNBOUND_TYPE_NAMES=0 -fno-exceptions -s MODULARIZE=1 -s NO_FILESYSTEM=1 -O3 --closure 1 --llvm-lto 1 --bind")
 
 include_directories(src)
 include_directories(aubio/src)
 
 add_executable(aubio ${source_files})
-
-# copy results to examples/
-add_custom_command(TARGET aubio POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy
-    ${CMAKE_BINARY_DIR}/aubio.js ${CMAKE_BINARY_DIR}/aubio.wasm
-    ${CMAKE_SOURCE_DIR}/examples/)

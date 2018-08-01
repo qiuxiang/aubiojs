@@ -5,7 +5,6 @@ aubiojs is a real-time audio processing library based on [aubio](https://github.
 - fft forward and inverse
 
 ## Usage
-(put aubio.js and aubio.wasm on the same folder as your html)
 ```html
 <script src="aubio.js"></script>
 <script>
@@ -20,8 +19,7 @@ Module().then(function (module) {
 ## Build
 This project uses [emscripten](https://github.com/kripken/emscripten) to compile aubio, make sure you have installed.
 
-Also feel free to install [Ninja](https://ninja-build.org) for faster builds.
-
 ```
-emcmake cmake -Bbuild -H. -GNinja && ninja -Cbuild
+emcmake cmake -Bbuild -H.
+make -Cbuild
 ```
