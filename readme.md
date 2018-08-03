@@ -9,7 +9,7 @@ aubiojs is a real-time audio processing library based on [aubio](https://github.
 <script src="aubio.js"></script>
 <script>
 Aubio().then(function (aubio) {
-  const tempo = new aubio.Tempo('default', bufferSize, hopSize, sampleRate)
+  const tempo = new aubio.Tempo(bufferSize, hopSize, sampleRate)
   // ...
   const pitch = tempo.do(audioBuffer)
 })
