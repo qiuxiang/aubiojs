@@ -5,40 +5,39 @@
   <title>Aubio Tempo</title>
 </head>
 <body>
-<div><canvas></canvas></div>
+<div><canvas height="400"></canvas></div>
 <script src="../build/aubio.js"></script>
 <script>
-var audioContext = new (window.AudioContext || window.webkitAudioContext)()
-var scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1)
-var aubioFFT
-var canvas = document.querySelector('canvas')
+const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1)
+const canvas = document.querySelector('canvas')
 canvas.width = document.body.clientWidth
-var canvasContext = canvas.getContext('2d')
+const canvasContext = canvas.getContext('2d')
 
 scriptProcessor.connect(audioContext.destination)
-Module().then(function (module) {
-  aubioFFT = new module.AubioFFT(scriptProcessor.bufferSize)
+Aubio().then(function (aubio) {
+  const fft = new aubio.FFT(scriptProcessor.bufferSize)
   scriptProcessor.addEventListener('audioprocess', function (event) {
-    var spectrum = aubioFFT.forward(event.inputBuffer.getChannelData(0))
-    var dataLength = parseInt(spectrum.norm.length * 0.25)
-    var barWidth = canvas.width / dataLength
+    const spectrum = fft.forward(event.inputBuffer.getChannelData(0))
+    const dataLength = parseInt(spectrum.norm.length * 0.2)
+    const barWidth = canvas.width / dataLength
     canvasContext.clearRect(0, 0, canvas.width, canvas.height)
     spectrum.norm.reduce(function (x, value, index) {
       canvasContext.fillStyle = 'hsl(' + (index * 360 / dataLength) + ', 100%, 50%)'
-      canvasContext.fillRect(x, canvas.height - value, barWidth, value)
+      canvasContext.fillRect(x, canvas.height - value, barWidth, value * 2)
       return x + barWidth
     }, 0)
   })
 })
 
-var audio = new Audio()
+const audio = new Audio()
 audio.controls = true
 audio.crossOrigin = 'anonymous'
-audio.src = 'http://mr1.doubanio.com/8f1f283335c594235a41431a9abce4cb/0/fm/song/p2203840_128k.mp4'
+audio.src = 'http://mr1.doubanio.com/e586b3b26b25c3b6b1590061a462f2e0/0/fm/song/p291930_128k.mp4'
 audio.play()
 document.body.appendChild(audio)
 
-var audioSource = audioContext.createMediaElementSource(audio)
+const audioSource = audioContext.createMediaElementSource(audio)
 audioSource.connect(scriptProcessor)
 audioSource.connect(audioContext.destination)
 

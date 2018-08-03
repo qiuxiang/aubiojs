@@ -3,14 +3,14 @@
 
 using namespace emscripten;
 
-class AubioFFT {
+class FFT {
 public:
-  AubioFFT(uint_t buf_size) {
+  FFT(uint_t buf_size) {
     buffer = new_fvec(buf_size);
     aubio_fft = new_aubio_fft(buf_size);
   }
 
-  ~AubioFFT() {
+  ~FFT() {
     del_aubio_fft(aubio_fft);
     del_fvec(buffer);
   }
@@ -58,9 +58,9 @@ private:
   fvec_t *buffer;
 };
 
-EMSCRIPTEN_BINDINGS(AubioFFT) {
-  class_<AubioFFT>("AubioFFT")
+EMSCRIPTEN_BINDINGS(FFT) {
+  class_<FFT>("FFT")
     .constructor<uint_t>()
-    .function("forward", &AubioFFT::Forward)
-    .function("inverse", &AubioFFT::Inverse);
+    .function("forward", &FFT::Forward)
+    .function("inverse", &FFT::Inverse);
 }

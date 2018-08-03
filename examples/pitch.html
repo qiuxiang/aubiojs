@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
 <head>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Aubio Pitch</title>
   <style>
   html {
@@ -31,18 +32,17 @@
 <canvas></canvas>
 <script src="../build/aubio.js"></script>
 <script>
-var audioContext = new (window.AudioContext || window.webkitAudioContext)()
-var scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1)
-var pitchDetector
-var maxFrequency = 1000
-var count = 0
+const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1)
+const maxFrequency = 1000
+let count = 0
 
-var audio = new Audio()
+const audio = new Audio()
 audio.crossOrigin = 'anonymous'
-audio.src = 'http://mr1.doubanio.com/8f1f283335c594235a41431a9abce4cb/0/fm/song/p2203840_128k.mp4'
+audio.src = 'http://mr3.doubanio.com/2489a904675881096cbec9863f1d55c7/2/fm/song/p456508_128k.mp3'
 audio.play()
 
-var audioSource = audioContext.createMediaElementSource(audio)
+const audioSource = audioContext.createMediaElementSource(audio)
 audioSource.connect(scriptProcessor)
 audioSource.connect(audioContext.destination)
 
@@ -50,18 +50,18 @@ audioSource.connect(audioContext.destination)
 //   audioContext.createMediaStreamSource(stream).connect(scriptProcessor)
 // })
 
-var $canvas = document.querySelector('canvas')
-var canvasContext = $canvas.getContext('2d')
+const $canvas = document.querySelector('canvas')
+const canvasContext = $canvas.getContext('2d')
 $canvas.width = document.body.clientWidth
 $canvas.height = document.body.clientHeight
 
 scriptProcessor.connect(audioContext.destination)
-Module().then(function (module) {
-  pitchDetector = new module.AubioPitch(
+Aubio().then(function (aubio) {
+  const pitchDetector = new aubio.Pitch(
       'default', scriptProcessor.bufferSize, 1, audioContext.sampleRate)
   scriptProcessor.addEventListener('audioprocess', function (event) {
-    var frequency = pitchDetector.do(event.inputBuffer.getChannelData(0))
-    var x = count % $canvas.width
+    const frequency = pitchDetector.do(event.inputBuffer.getChannelData(0))
+    const x = count % $canvas.width
 
     canvasContext.beginPath()
     canvasContext.clearRect(x, 0, 1, $canvas.height)
@@ -69,7 +69,7 @@ Module().then(function (module) {
 
     if (frequency) {
       pitch.innerHTML = frequency.toFixed(1) + ' Hz'
-      var y = parseInt(frequency / maxFrequency * $canvas.height)
+      const y = parseInt(frequency / maxFrequency * $canvas.height)
       canvasContext.arc(x, y, 1, 0, 2 * Math.PI)
       canvasContext.fill()
     }

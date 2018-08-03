@@ -33,7 +33,13 @@ set(source_files
   ${PROJECT_SOURCE_DIR}/src/pitch.cc)
 
 add_definitions(-DHAVE_CONFIG_H)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DEMSCRIPTEN_HAS_UNBOUND_TYPE_NAMES=0 -fno-exceptions -s MODULARIZE=1 -s NO_FILESYSTEM=1 -O3 --closure 1 --llvm-lto 1 --bind")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
+  -DEMSCRIPTEN_HAS_UNBOUND_TYPE_NAMES=0 \
+  -fno-exceptions -O3 \
+  -s MODULARIZE=1 \
+  -s EXPORT_NAME=Aubio \
+  -s NO_FILESYSTEM=1 \
+  --closure 1 --llvm-lto 1 --bind")
 
 include_directories(src)
 include_directories(aubio/src)

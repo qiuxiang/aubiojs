@@ -3,14 +3,14 @@
 
 using namespace emscripten;
 
-class AubioTempo {
+class Tempo {
 public:
-  AubioTempo(std::string method, uint_t buf_size, uint_t hop_size, uint_t sample_rate) {
+  Tempo(std::string method, uint_t buf_size, uint_t hop_size, uint_t sample_rate) {
     buffer = new_fvec(hop_size);
     aubio_tempo = new_aubio_tempo(method.c_str(), buf_size, hop_size, sample_rate);
   }
 
-  ~AubioTempo() {
+  ~Tempo() {
     del_aubio_tempo(aubio_tempo);
     del_fvec(buffer);
     del_fvec(output);
@@ -38,10 +38,10 @@ private:
   fvec_t *output = new_fvec(1);
 };
 
-EMSCRIPTEN_BINDINGS(AubioTempo) {
-  class_<AubioTempo>("AubioTempo")
+EMSCRIPTEN_BINDINGS(Tempo) {
+  class_<Tempo>("Tempo")
     .constructor<std::string, uint_t, uint_t, uint_t>()
-    .function("do", &AubioTempo::Do)
-    .function("getBpm", &AubioTempo::GetBpm)
-    .function("getConfidence", &AubioTempo::GetConfidence);
+    .function("do", &Tempo::Do)
+    .function("getBpm", &Tempo::GetBpm)
+    .function("getConfidence", &Tempo::GetConfidence);
 }

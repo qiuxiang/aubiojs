@@ -12,7 +12,7 @@
     font-size: 40px;
     border: 1px solid;
     border-radius: 50%;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     bottom: 0;
@@ -59,36 +59,35 @@
 </div>
 <script src="../build/aubio.js"></script>
 <script>
-var audioContext = new (window.AudioContext || window.webkitAudioContext)()
-var scriptProcessor = audioContext.createScriptProcessor(512, 1, 1)
-var aubioTempo
+const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+const scriptProcessor = audioContext.createScriptProcessor(512, 1, 1)
 scriptProcessor.connect(audioContext.destination)
-Module().then(function (module) {
-  aubioTempo = new module.AubioTempo(
-        'default', scriptProcessor.bufferSize * 4, scriptProcessor.bufferSize, audioContext.sampleRate)
+Aubio().then(function (aubio) {
+  const tempo = new aubio.Tempo(
+    'default', scriptProcessor.bufferSize * 4, scriptProcessor.bufferSize, audioContext.sampleRate)
   scriptProcessor.addEventListener('audioprocess', function (event) {
-    if (aubioTempo.do(event.inputBuffer.getChannelData(0))) {
-      console.log(aubioTempo.getConfidence())
-      beat(aubioTempo.getBpm())
+    if (tempo.do(event.inputBuffer.getChannelData(0))) {
+      console.log(tempo.getConfidence())
+      beat(tempo.getBpm())
     }
   })
 })
 
-var audio = new Audio()
+const audio = new Audio()
 audio.controls = true
 audio.crossOrigin = 'anonymous'
 audio.src = 'http://mr1.doubanio.com/e586b3b26b25c3b6b1590061a462f2e0/0/fm/song/p291930_128k.mp4'
 audio.play()
 document.body.appendChild(audio)
 
-var audioSource = audioContext.createMediaElementSource(audio)
+const audioSource = audioContext.createMediaElementSource(audio)
 audioSource.connect(scriptProcessor)
 audioSource.connect(audioContext.destination)
 
-var active = -1
-var $bpm = document.querySelector('#bpm')
-var $beats = document.querySelectorAll('.beat')
-for (var i = 0; i < $beats.length; i += 1) {
+let active = -1
+const $bpm = document.querySelector('#bpm')
+const $beats = document.querySelectorAll('.beat')
+for (let i = 0; i < $beats.length; i += 1) {
   $beats[i].addEventListener('webkitTransitionEnd', function () {
     this.classList.remove('active')
   })
