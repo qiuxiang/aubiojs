@@ -24,6 +24,26 @@ public:
     return output->data[0];
   }
 
+  float GetTolerance() {
+    return aubio_pitch_get_tolerance(aubio_pitch);
+  }
+
+  int SetTolerance(float tol) {
+    return aubio_pitch_set_tolerance(aubio_pitch, tol);
+  }
+
+  float GetSilence() {
+    return aubio_pitch_get_silence(aubio_pitch);
+  }
+
+  int SetSilence(val tol) {
+    return aubio_pitch_set_silence(aubio_pitch, tol.as<float>());
+  }
+
+  float GetConfidence() {
+    return aubio_pitch_get_confidence(aubio_pitch);
+  }
+
 private:
   aubio_pitch_t *aubio_pitch;
   fvec_t *buffer;
@@ -33,5 +53,10 @@ private:
 EMSCRIPTEN_BINDINGS(Pitch) {
   class_<Pitch>("Pitch")
     .constructor<std::string, uint_t, uint_t, uint_t>()
-    .function("do", &Pitch::Do);
+    .function("do", &Pitch::Do)
+    .function("getTolerance", &Pitch::GetTolerance)
+    .function("setTolerance", &Pitch::SetTolerance)
+    .function("getSilence", &Pitch::GetSilence)
+    .function("setSilence", &Pitch::SetSilence)
+    .function("getConfidence", &Pitch::GetConfidence);
 }
