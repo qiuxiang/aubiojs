@@ -1,0 +1,13 @@
+{
+  "name": "aubiojs",
+  "version": "0.0.1",
+  "main": "build/aubio.js",
+  "types": "index.d.ts",
+  "files": [
+    "index.d.ts",
+    "build/aubio.js"
+  ],
+  "scripts": {
+    "build": "export EM_NODE_JS=node && emcmake cmake -Bbuild -H. && make -Cbuild -j"
+  }
+}

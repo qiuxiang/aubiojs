@@ -1,38 +1,51 @@
 type InputArray = Float32Array | number[];
 
-declare namespace Aubio {
-  class FFT {
-    constructor(bufferSize: number);
-    forward(buffer: InputArray): number[];
-    inverse(buffer: InputArray): number[];
-  }
+declare class FFT {
+  forward(buffer: InputArray): number[];
+  inverse(buffer: InputArray): number[];
+}
 
-  class Pitch {
-    constructor(
-      method:
-        | "default" // yinfft
-        | "yin" // YIN algorithm
-        | "mcomb" // Multi-comb filter
-        | "schmitt" // Schmitt trigger
-        | "fcomb" // Fast comb filter
-        | "yinfft" // Spectral YIN
-        | "yinfast" // YIN fast
-        | "specacf", // Spectral autocorrelation
-      bufferSize: number, // size of the input buffer to analyse
-      hopSize: number, // step size between two consecutive analysis instant
-      sampleRate: number // sampling rate of the signal
-    );
-    do(buffer: InputArray): number;
-  }
+declare type PitchMethod =
+  | "default"
+  | "yin"
+  | "mcomb"
+  | "schmitt"
+  | "fcomb"
+  | "yinfft"
+  | "yinfast"
+  | "specacf";
 
-  class Tempo {
-    constructor(
+declare class Pitch {
+  do(buffer: InputArray): number;
+}
+
+declare class Tempo {
+  do(buffer: InputArray): number;
+  getBpm(): number;
+  getConfidence(): number;
+}
+
+declare type Aubio = {
+  FFT: {
+    new (bufferSize: number): FFT;
+  };
+  Pitch: {
+    new (
+      method: PitchMethod, // Spectral autocorrelation
       bufferSize: number, // length of FFT
       hopSize: number, // number of frames between two consecutive runs
       sampleRate: number // sampling rate of the signal to analyze
-    );
-    do(buffer: InputArray): number;
-    getBpm(): number;
-    getConfidence(): number;
-  }
-}
+    ): Pitch;
+  };
+  Tempo: {
+    new (
+      bufferSize: number, // length of FFT
+      hopSize: number, // number of frames between two consecutive runs
+      sampleRate: number // sampling rate of the signal to analyze
+    ): Tempo;
+  };
+};
+
+declare function aubio(): Promise<Aubio>;
+
+export default aubio;
