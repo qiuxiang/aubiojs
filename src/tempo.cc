@@ -1,5 +1,5 @@
-#include <emscripten/bind.h>
 #include "aubio.h"
+#include <emscripten/bind.h>
 
 using namespace emscripten;
 
@@ -16,7 +16,7 @@ public:
     del_fvec(output);
   }
 
-  float Do(val input) {
+  float _do(val input) {
     for (int i = 0; i < buffer->length; i += 1) {
       buffer->data[i] = input[i].as<float>();
     }
@@ -24,13 +24,9 @@ public:
     return output->data[0];
   }
 
-  float GetConfidence() {
-    return aubio_tempo_get_confidence(aubio_tempo);
-  }
+  float getConfidence() { return aubio_tempo_get_confidence(aubio_tempo); }
 
-  float GetBpm() {
-    return aubio_tempo_get_bpm(aubio_tempo);
-  }
+  float getBpm() { return aubio_tempo_get_bpm(aubio_tempo); }
 
 private:
   aubio_tempo_t *aubio_tempo;
@@ -40,8 +36,8 @@ private:
 
 EMSCRIPTEN_BINDINGS(Tempo) {
   class_<Tempo>("Tempo")
-    .constructor<uint_t, uint_t, uint_t>()
-    .function("do", &Tempo::Do)
-    .function("getBpm", &Tempo::GetBpm)
-    .function("getConfidence", &Tempo::GetConfidence);
+      .constructor<uint_t, uint_t, uint_t>()
+      .function("do", &Tempo::_do)
+      .function("getBpm", &Tempo::getBpm)
+      .function("getConfidence", &Tempo::getConfidence);
 }

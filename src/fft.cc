@@ -1,5 +1,5 @@
-#include <emscripten/bind.h>
 #include "aubio.h"
+#include <emscripten/bind.h>
 
 using namespace emscripten;
 
@@ -15,7 +15,7 @@ public:
     del_fvec(buffer);
   }
 
-  val Forward(val input) {
+  val _do(val input) {
     cvec_t *output = new_cvec(buffer->length);
     for (int i = 0; i < buffer->length; i += 1) {
       buffer->data[i] = input[i].as<float>();
@@ -34,7 +34,7 @@ public:
     return spectrum;
   }
 
-  val Inverse(val input) {
+  val rdo(val input) {
     cvec_t *spectrum = new_cvec(buffer->length);
     val norm = input["norm"];
     val phas = input["phas"];
@@ -60,7 +60,7 @@ private:
 
 EMSCRIPTEN_BINDINGS(FFT) {
   class_<FFT>("FFT")
-    .constructor<uint_t>()
-    .function("forward", &FFT::Forward)
-    .function("inverse", &FFT::Inverse);
+      .constructor<uint_t>()
+      .function("do", &FFT::_do)
+      .function("rdo", &FFT::rdo);
 }

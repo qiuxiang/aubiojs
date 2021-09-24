@@ -56,7 +56,7 @@ $canvas.width = document.body.clientWidth
 $canvas.height = document.body.clientHeight
 
 scriptProcessor.connect(audioContext.destination)
-Aubio().then(function (aubio) {
+aubio().then(function (aubio) {
   const pitchDetector = new aubio.Pitch(
     'default', scriptProcessor.bufferSize, 1, audioContext.sampleRate)
   scriptProcessor.addEventListener('audioprocess', function (event) {

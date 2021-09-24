@@ -62,12 +62,12 @@
 const audioContext = new (window.AudioContext || window.webkitAudioContext)()
 const scriptProcessor = audioContext.createScriptProcessor(512, 1, 1)
 scriptProcessor.connect(audioContext.destination)
-Aubio().then(function (aubio) {
+aubio().then(function (aubio) {
   const tempo = new aubio.Tempo(
     scriptProcessor.bufferSize * 4, scriptProcessor.bufferSize, audioContext.sampleRate)
   scriptProcessor.addEventListener('audioprocess', function (event) {
     if (tempo.do(event.inputBuffer.getChannelData(0))) {
-      console.log(tempo.getConfidence())
+      console.log('confidence', tempo.getConfidence())
       beat(tempo.getBpm())
     }
   })

@@ -1,13 +1,15 @@
-#include <emscripten/bind.h>
 #include "aubio.h"
+#include <emscripten/bind.h>
 
 using namespace emscripten;
 
 class Pitch {
 public:
-  Pitch(std::string method, uint_t buf_size, uint_t hop_size, uint_t sample_rate) {
+  Pitch(std::string method, uint_t buf_size, uint_t hop_size,
+        uint_t sample_rate) {
     buffer = new_fvec(buf_size);
-    aubio_pitch = new_aubio_pitch(method.c_str(), buf_size, hop_size, sample_rate);
+    aubio_pitch =
+        new_aubio_pitch(method.c_str(), buf_size, hop_size, sample_rate);
   }
 
   ~Pitch() {
@@ -16,7 +18,7 @@ public:
     del_fvec(output);
   }
 
-  float Do(val input) {
+  float _do(val input) {
     for (int i = 0; i < buffer->length; i += 1) {
       buffer->data[i] = input[i].as<float>();
     }
@@ -24,25 +26,19 @@ public:
     return output->data[0];
   }
 
-  float GetTolerance() {
-    return aubio_pitch_get_tolerance(aubio_pitch);
-  }
+  float getTolerance() { return aubio_pitch_get_tolerance(aubio_pitch); }
 
-  int SetTolerance(float tol) {
+  int setTolerance(float tol) {
     return aubio_pitch_set_tolerance(aubio_pitch, tol);
   }
 
-  float GetSilence() {
-    return aubio_pitch_get_silence(aubio_pitch);
-  }
+  float getSilence() { return aubio_pitch_get_silence(aubio_pitch); }
 
-  int SetSilence(val tol) {
+  int setSilence(val tol) {
     return aubio_pitch_set_silence(aubio_pitch, tol.as<float>());
   }
 
-  float GetConfidence() {
-    return aubio_pitch_get_confidence(aubio_pitch);
-  }
+  float getConfidence() { return aubio_pitch_get_confidence(aubio_pitch); }
 
 private:
   aubio_pitch_t *aubio_pitch;
@@ -52,11 +48,11 @@ private:
 
 EMSCRIPTEN_BINDINGS(Pitch) {
   class_<Pitch>("Pitch")
-    .constructor<std::string, uint_t, uint_t, uint_t>()
-    .function("do", &Pitch::Do)
-    .function("getTolerance", &Pitch::GetTolerance)
-    .function("setTolerance", &Pitch::SetTolerance)
-    .function("getSilence", &Pitch::GetSilence)
-    .function("setSilence", &Pitch::SetSilence)
-    .function("getConfidence", &Pitch::GetConfidence);
+      .constructor<std::string, uint_t, uint_t, uint_t>()
+      .function("do", &Pitch::_do)
+      .function("getTolerance", &Pitch::getTolerance)
+      .function("setTolerance", &Pitch::setTolerance)
+      .function("getSilence", &Pitch::getSilence)
+      .function("setSilence", &Pitch::setSilence)
+      .function("getConfidence", &Pitch::getConfidence);
 }

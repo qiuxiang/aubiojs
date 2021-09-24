@@ -15,10 +15,10 @@ canvas.width = document.body.clientWidth
 const canvasContext = canvas.getContext('2d')
 
 scriptProcessor.connect(audioContext.destination)
-Aubio().then(function (aubio) {
+aubio().then(function (aubio) {
   const fft = new aubio.FFT(scriptProcessor.bufferSize)
   scriptProcessor.addEventListener('audioprocess', function (event) {
-    const spectrum = fft.forward(event.inputBuffer.getChannelData(0))
+    const spectrum = fft.do(event.inputBuffer.getChannelData(0))
     const dataLength = parseInt(spectrum.norm.length * 0.2)
     const barWidth = canvas.width / dataLength
     canvasContext.clearRect(0, 0, canvas.width, canvas.height)
