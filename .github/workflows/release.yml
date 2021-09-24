@@ -11,6 +11,9 @@ jobs:
         id: release
         env:
           GITHUB_TOKEN: ${{ github.token }}
+      - uses: actions/setup-node@v2
+        with:
+          registry-url: 'https://registry.npmjs.org'
       - uses: mymindstorm/setup-emsdk@v9
       - name: Release
         run: |
