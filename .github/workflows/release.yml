@@ -18,7 +18,7 @@ jobs:
           git submodule update
           npm i
           npm run build
-          npm version ${{ steps.release.outputs.tag_name }}
+          npm version ${{ steps.release.outputs.tag_name }} --no-git-tag-version
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
