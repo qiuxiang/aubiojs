@@ -11,7 +11,8 @@ jobs:
         id: release
         env:
           GITHUB_TOKEN: ${{ github.token }}
-      - name: Build
+      - uses: mymindstorm/setup-emsdk@v9
+      - name: Release
         run: |
           git submodule init
           git submodule update
