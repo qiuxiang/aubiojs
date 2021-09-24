@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Aubio Pitch</title>
+    <style>
+      html {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        height: 100%;
+      }
+
+      canvas {
+        position: absolute;
+        top: 0;
+      }
+
+      #pitch {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 5vw;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="pitch"></div>
+    <canvas></canvas>
+    <script src="../build/aubio.js"></script>
+    <script>
+      const audioContext = new (window.AudioContext ||
+        window.webkitAudioContext)();
+      const scriptProcessor = audioContext.createScriptProcessor(2048, 1, 1);
+      const maxFrequency = 1000;
+      let count = 0;
+
+      const audio = new Audio();
+      audio.crossOrigin = "anonymous";
+      audio.src =
+        "http://mr3.doubanio.com/2489a904675881096cbec9863f1d55c7/2/fm/song/p456508_128k.mp3";
+      audio.play();
+
+      const audioSource = audioContext.createMediaElementSource(audio);
+      audioSource.connect(scriptProcessor);
+      audioSource.connect(audioContext.destination);
+
+      // navigator.mediaDevices.getUserMedia({audio: true}).then(function (stream) {
+      //   audioContext.createMediaStreamSource(stream).connect(scriptProcessor)
+      // })
+
+      const $canvas = document.querySelector("canvas");
+      const canvasContext = $canvas.getContext("2d");
+      $canvas.width = document.body.clientWidth;
+      $canvas.height = document.body.clientHeight;
+
+      scriptProcessor.connect(audioContext.destination);
+      aubio().then(function (aubio) {
+        const pitchDetector = new aubio.Pitch(
+          "default",
+          scriptProcessor.bufferSize,
+          1,
+          audioContext.sampleRate
+        );
+        scriptProcessor.addEventListener("audioprocess", function (event) {
+          const frequency = pitchDetector.do(
+            event.inputBuffer.getChannelData(0)
+          );
+          const x = count % $canvas.width;
+
+          canvasContext.beginPath();
+          canvasContext.clearRect(x, 0, 1, $canvas.height);
+          canvasContext.fillRect(x + 1, 0, 1, $canvas.height);
+
+          if (frequency) {
+            pitch.innerHTML = frequency.toFixed(1) + " Hz";
+            const y = parseInt((frequency / maxFrequency) * $canvas.height);
+            canvasContext.arc(x, y, 1, 0, 2 * Math.PI);
+            canvasContext.fill();
+          }
+
+          count += 1;
+        });
+      });
+    </script>
+  </body>
+</html>

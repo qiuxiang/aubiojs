@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Aubio Tempo</title>
+    <style>
+      .beats {
+        width: 160px;
+        height: 160px;
+        line-height: 160px;
+        text-align: center;
+        font-size: 40px;
+        border: 1px solid;
+        border-radius: 50%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        box-sizing: border-box;
+      }
+
+      .beats:after {
+        content: "BPM";
+        font-size: 14px;
+        position: absolute;
+        bottom: 0;
+        line-height: 90px;
+        left: 0;
+        right: 0;
+      }
+
+      .beat {
+        width: 100%;
+        height: 100%;
+        border: 1px solid;
+        border-radius: 50%;
+        box-sizing: border-box;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+
+      .beat.active {
+        transition: 1s all ease-out;
+        transform: scale(4);
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="beats">
+      <div id="bpm">0</div>
+      <div class="beat"></div>
+      <div class="beat"></div>
+      <div class="beat"></div>
+      <div class="beat"></div>
+    </div>
+    <script src="../build/aubio.js"></script>
+    <script>
+      const audioContext = new (window.AudioContext ||
+        window.webkitAudioContext)();
+      const scriptProcessor = audioContext.createScriptProcessor(512, 1, 1);
+      scriptProcessor.connect(audioContext.destination);
+      aubio().then(function (aubio) {
+        const tempo = new aubio.Tempo(
+          scriptProcessor.bufferSize * 4,
+          scriptProcessor.bufferSize,
+          audioContext.sampleRate
+        );
+        scriptProcessor.addEventListener("audioprocess", function (event) {
+          if (tempo.do(event.inputBuffer.getChannelData(0))) {
+            console.log("confidence", tempo.getConfidence());
+            beat(tempo.getBpm());
+          }
+        });
+      });
+
+      const audio = new Audio();
+      audio.controls = true;
+      audio.crossOrigin = "anonymous";
+      audio.src =
+        "http://mr1.doubanio.com/e586b3b26b25c3b6b1590061a462f2e0/0/fm/song/p291930_128k.mp4";
+      audio.play();
+      document.body.appendChild(audio);
+
+      const audioSource = audioContext.createMediaElementSource(audio);
+      audioSource.connect(scriptProcessor);
+      audioSource.connect(audioContext.destination);
+
+      let active = -1;
+      const $bpm = document.querySelector("#bpm");
+      const $beats = document.querySelectorAll(".beat");
+      for (let i = 0; i < $beats.length; i += 1) {
+        $beats[i].addEventListener("webkitTransitionEnd", function () {
+          this.classList.remove("active");
+        });
+      }
+
+      function beat(bpm) {
+        active = (active + 1) % $beats.length;
+        $beats[active].classList.add("active");
+        $bpm.innerHTML = parseInt(bpm);
+      }
+    </script>
+  </body>
+</html>
