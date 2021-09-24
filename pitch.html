@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Aubio Pitch</title>
+    <style>
+      html {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        height: 100%;
+      }
+
+      canvas {
+        position: absolute;
+        top: 0;
+      }
+
+      audio {
+        margin: 8px;
+      }
+
+      #pitch {
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 5vw;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas></canvas>
+    <div id="pitch"></div>
+    <audio
+      src="http://mr3.doubanio.com/2489a904675881096cbec9863f1d55c7/2/fm/song/p456508_128k.mp3"
+      crossorigin="anonymous"
+      controls
+    ></audio>
+    <script src="aubio.js"></script>
+    <script>
+      let audioSource, audioContext, scriptProcessor;
+      let count = 0;
+      const audio = document.querySelector("audio");
+      const maxFrequency = 2000;
+      const bufferSize = 1 << 12;
+      const size = bufferSize / (1 << 10);
+      audio.addEventListener("play", run);
+
+      function run() {
+        if (audioContext) return;
+
+        audioContext = new (AudioContext || webkitAudioContext)();
+        scriptProcessor = audioContext.createScriptProcessor(bufferSize, 1, 1);
+        audioSource = audioContext.createMediaElementSource(audio);
+        audioSource.connect(scriptProcessor);
+        audioSource.connect(audioContext.destination);
+        scriptProcessor.connect(audioContext.destination);
+
+        const $canvas = document.querySelector("canvas");
+        const canvasContext = $canvas.getContext("2d");
+        $canvas.width = document.body.clientWidth;
+        $canvas.height = document.body.clientHeight;
+
+        aubio().then(({ Pitch }) => {
+          const pitchDetector = new Pitch(
+            "default",
+            scriptProcessor.bufferSize,
+            scriptProcessor.bufferSize / 8,
+            audioContext.sampleRate
+          );
+          scriptProcessor.addEventListener("audioprocess", function (event) {
+            if (audio.paused) return;
+
+            const data = event.inputBuffer.getChannelData(0);
+            const frequency = pitchDetector.do(data);
+            const x = (count * size) % $canvas.width;
+            if (x < size) {
+              canvasContext.clearRect(0, 0, $canvas.width, $canvas.height);
+              canvasContext.beginPath();
+            }
+
+            if (frequency) {
+              pitch.innerHTML = frequency.toFixed(1) + " Hz";
+              const y =
+                $canvas.height - (frequency / maxFrequency) * $canvas.height;
+              canvasContext.lineTo(x, y);
+              canvasContext.stroke();
+            }
+
+            count += 1;
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
