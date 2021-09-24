@@ -57,51 +57,56 @@
       <div class="beat"></div>
       <div class="beat"></div>
     </div>
+    <audio
+      src="https://file-examples-com.github.io/uploads/2017/11/file_example_WAV_1MG.wav"
+      crossorigin="anonymous"
+      controls
+    ></audio>
     <script src="../build/aubio.js"></script>
     <script>
-      const audioContext = new (window.AudioContext ||
-        window.webkitAudioContext)();
-      const scriptProcessor = audioContext.createScriptProcessor(512, 1, 1);
-      scriptProcessor.connect(audioContext.destination);
-      aubio().then(function (aubio) {
-        const tempo = new aubio.Tempo(
-          scriptProcessor.bufferSize * 4,
-          scriptProcessor.bufferSize,
-          audioContext.sampleRate
-        );
-        scriptProcessor.addEventListener("audioprocess", function (event) {
-          if (tempo.do(event.inputBuffer.getChannelData(0))) {
-            console.log("confidence", tempo.getConfidence());
-            beat(tempo.getBpm());
-          }
+      let audioContext, scriptProcessor, audioSource;
+      const audio = document.querySelector("audio");
+      audio.addEventListener("play", run);
+
+      function run() {
+        if (audioContext) return;
+
+        audioContext = new (AudioContext || webkitAudioContext)();
+        scriptProcessor = audioContext.createScriptProcessor(512, 1, 1);
+        scriptProcessor.connect(audioContext.destination);
+        aubio().then(({ Tempo }) => {
+          const tempo = new Tempo(
+            scriptProcessor.bufferSize * 4,
+            scriptProcessor.bufferSize,
+            audioContext.sampleRate
+          );
+          scriptProcessor.addEventListener("audioprocess", function (event) {
+            if (tempo.do(event.inputBuffer.getChannelData(0))) {
+              console.log("confidence", tempo.getConfidence());
+              beat(tempo.getBpm());
+            }
+          });
         });
-      });
 
-      const audio = new Audio();
-      audio.controls = true;
-      audio.crossOrigin = "anonymous";
-      audio.src =
-        "http://mr1.doubanio.com/e586b3b26b25c3b6b1590061a462f2e0/0/fm/song/p291930_128k.mp4";
-      audio.play();
-      document.body.appendChild(audio);
+        audioSource =
+          audioSource || audioContext.createMediaElementSource(audio);
+        audioSource.connect(scriptProcessor);
+        audioSource.connect(audioContext.destination);
 
-      const audioSource = audioContext.createMediaElementSource(audio);
-      audioSource.connect(scriptProcessor);
-      audioSource.connect(audioContext.destination);
+        let active = -1;
+        const $bpm = document.querySelector("#bpm");
+        const $beats = document.querySelectorAll(".beat");
+        for (let i = 0; i < $beats.length; i += 1) {
+          $beats[i].addEventListener("webkitTransitionEnd", function () {
+            this.classList.remove("active");
+          });
+        }
 
-      let active = -1;
-      const $bpm = document.querySelector("#bpm");
-      const $beats = document.querySelectorAll(".beat");
-      for (let i = 0; i < $beats.length; i += 1) {
-        $beats[i].addEventListener("webkitTransitionEnd", function () {
-          this.classList.remove("active");
-        });
-      }
-
-      function beat(bpm) {
-        active = (active + 1) % $beats.length;
-        $beats[active].classList.add("active");
-        $bpm.innerHTML = parseInt(bpm);
+        function beat(bpm) {
+          active = (active + 1) % $beats.length;
+          $beats[active].classList.add("active");
+          $bpm.innerHTML = parseInt(bpm);
+        }
       }
     </script>
   </body>
