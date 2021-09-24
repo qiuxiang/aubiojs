@@ -1,0 +1,25 @@
+name: pages
+on:
+  push:
+    # paths:
+    #   - src
+    #   - examples
+    #   - spec
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: mymindstorm/setup-emsdk@v9
+      - name: Build
+        run: |
+          git submodule init
+          git submodule update
+          npm i
+          npm build
+          cp build/aubio.js examples/
+          sed -i -r 's/..\/build\///' examples/*.html
+      - uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: examples
