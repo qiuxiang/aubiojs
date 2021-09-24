@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
-import aubio from "../build/aubio.js";
 import { decode } from "wav-decoder";
+import aubio from "../build/aubio.js";
 
 async function getAudioData(url) {
   const response = await fetch(url);
@@ -17,7 +17,7 @@ it("pitch detection", async () => {
   const pitch = new Pitch("default", bufferSize, bufferSize / 4, sampleRate);
   for (let i = 0; i < data.length - bufferSize; i += bufferSize) {
     const frequency = pitch.do(data.slice(i, i + bufferSize));
-    console.log(`${frequency.toFixed(1)} Hz`);
+    console.log(`${frequency.toFixed(0)} Hz`);
   }
 });
 
@@ -26,13 +26,14 @@ it("tempo detection", async () => {
   const [sampleRate, data] = await getAudioData(
     "https://file-examples-com.github.io/uploads/2017/11/file_example_WAV_1MG.wav"
   );
-  const bufferSize = 4096;
+  const bufferSize = 1024;
   const tempo = new Tempo(bufferSize, bufferSize / 8, sampleRate);
-  for (let i = 0; i < data.length - bufferSize; i += bufferSize) {
+  const length = (data.length - bufferSize) / 2;
+  for (let i = 0; i < length; i += bufferSize) {
     tempo.do(data.slice(i, i + bufferSize));
     const bpm = tempo.getBpm();
     if (bpm) {
-      console.log(bpm.toFixed(0));
+      console.log("bpm", bpm.toFixed(0));
     }
   }
 });
