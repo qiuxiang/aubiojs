@@ -1,17 +1,5 @@
 type InputBuffer = Float32Array | number[];
 
-declare class FFT {
-  /**
-   * compute forward FFT
-   */
-  do(buffer: InputBuffer): number[];
-
-  /**
-   * compute backward (inverse) FFT
-   */
-  rdo(buffer: InputBuffer): number[];
-}
-
 /**
  * default : use the default method
  *
@@ -109,17 +97,6 @@ declare class Tempo {
 }
 
 declare type Aubio = {
-  FFT: {
-    /**
-     * Fast Fourier Transform
-     *
-     * Depending on how aubio was compiled, FFT are computed using one of:
-     *   - [Ooura](http://www.kurims.kyoto-u.ac.jp/~ooura/fft.html)
-     *   - [FFTW3](http://www.fftw.org)
-     *   - [vDSP](https://developer.apple.com/library/mac/#documentation/Accelerate/Reference/vDSPRef/Reference/reference.html)
-     */
-    new (bufferSize: number): FFT;
-  };
   Pitch: {
     /**
      * Pitch detection

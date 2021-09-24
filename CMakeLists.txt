@@ -28,7 +28,6 @@ set(source_files
   ${PROJECT_SOURCE_DIR}/aubio/src/fvec.c
   ${PROJECT_SOURCE_DIR}/aubio/src/lvec.c
   ${PROJECT_SOURCE_DIR}/aubio/src/mathutils.c
-  ${PROJECT_SOURCE_DIR}/src/fft.cc
   ${PROJECT_SOURCE_DIR}/src/tempo.cc
   ${PROJECT_SOURCE_DIR}/src/pitch.cc)
 
@@ -37,7 +36,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
   -s MODULARIZE=1 \
   -s SINGLE_FILE=1 \
   -s EXPORT_NAME=aubio \
-  -Oz --bind")
+  -Oz --closure 1 --bind")
 
 include_directories(src)
 include_directories(aubio/src)
