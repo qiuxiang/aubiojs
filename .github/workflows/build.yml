@@ -1,10 +1,10 @@
 name: pages
 on:
   push:
-    # paths:
-    #   - src
-    #   - examples
-    #   - spec
+    paths:
+      - src
+      - examples
+      - spec
 jobs:
   build:
     runs-on: ubuntu-latest

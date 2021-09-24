@@ -11,3 +11,13 @@ jobs:
         id: release
         env:
           GITHUB_TOKEN: ${{ github.token }}
+      - name: Build
+        run: |
+          git submodule init
+          git submodule update
+          npm i
+          npm run build
+          npm version ${{ steps.release.outputs.tag_name }}
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

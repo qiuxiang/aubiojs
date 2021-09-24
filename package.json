@@ -1,6 +1,6 @@
 {
   "name": "aubiojs",
-  "version": "1.0.1",
+  "version": "0.0.1",
   "main": "build/aubio.js",
   "types": "index.d.ts",
   "files": [
