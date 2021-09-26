@@ -1,4 +1,4 @@
-# aubiojs [![npm-badge]][npm]
+# aubiojs [![npm-badge]][npm] [![build-badge]][build]
 
 aubiojs is a real-time audio processing library based on [aubio](https://github.com/aubio/aubio), now including:
 
@@ -45,4 +45,6 @@ make -Cbuild -j
 ```
 
 [npm]: https://www.npmjs.com/package/aubiojs
-[npm-badge]: https://badge.fury.io/js/aubiojs.svg
+[npm-badge]: https://img.shields.io/npm/v/aubiojs.svg
+[build]: https://github.com/qiuxiang/aubiojs/actions/workflows/build.yml
+[build-badge]: https://github.com/qiuxiang/aubiojs/actions/workflows/build.yml/badge.svg
