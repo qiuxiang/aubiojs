@@ -1,4 +1,4 @@
-# aubiojs
+# aubiojs [![npm-badge]][npm]
 
 aubiojs is a real-time audio processing library based on [aubio](https://github.com/aubio/aubio), now including:
 
@@ -43,3 +43,6 @@ This project uses [emscripten](https://github.com/kripken/emscripten) to compile
 emcmake cmake -Bbuild -H.
 make -Cbuild -j
 ```
+
+[npm]: https://www.npmjs.com/package/aubiojs
+[npm-badge]: https://badge.fury.io/js/aubiojs.svg
