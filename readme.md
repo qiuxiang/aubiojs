@@ -1,11 +1,11 @@
 # aubiojs [![npm-badge]][npm] [![build-badge]][build]
 
+[Online Demo](https://qiuxiang.github.io/aubiojs/)
+
 aubiojs is a real-time audio processing library based on [aubio](https://github.com/aubio/aubio), now including:
 
 - pitch detection
 - tempo detection
-
-[Online Demo](https://qiuxiang.github.io/aubiojs/)
 
 ## Usage
 
@@ -24,7 +24,9 @@ aubiojs is a real-time audio processing library based on [aubio](https://github.
 
 ### Node
 
-`npm i aubiojs`
+```
+npm i aubiojs
+```
 
 ```js
 import aubio from "aubiojs";
@@ -40,8 +42,7 @@ const bpm = tempo.getBpm();
 This project uses [emscripten](https://github.com/kripken/emscripten) to compile aubio, make sure you have installed.
 
 ```
-emcmake cmake -Bbuild -H.
-make -Cbuild -j
+npm run build
 ```
 
 [npm]: https://www.npmjs.com/package/aubiojs
