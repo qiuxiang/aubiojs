@@ -1,10 +1,5 @@
 name: build
-on:
-  push:
-    paths:
-      - src
-      - examples
-      - spec
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
