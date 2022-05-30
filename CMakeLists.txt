@@ -34,6 +34,7 @@ set(source_files
 add_definitions(-DHAVE_CONFIG_H)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
   -s MODULARIZE=1 \
+  -s EXPORT_ES6=1 \
   -s SINGLE_FILE=1 \
   -s EXPORT_NAME=aubio \
   -Oz --closure 1 --bind")
