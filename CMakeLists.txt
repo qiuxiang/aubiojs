@@ -31,15 +31,11 @@ set(source_files
   ${PROJECT_SOURCE_DIR}/src/tempo.cc
   ${PROJECT_SOURCE_DIR}/src/pitch.cc)
 
-add_definitions(-DHAVE_CONFIG_H)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \
-  -s MODULARIZE=1 \
-  -s EXPORT_ES6=1 \
-  -s SINGLE_FILE=1 \
-  -s EXPORT_NAME=aubio \
-  -Oz --closure 1 --bind")
-
 include_directories(src)
 include_directories(aubio/src)
+add_definitions(-DHAVE_CONFIG_H)
 
-add_executable(aubio ${source_files})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -sMODULARIZE=1 -sEXPORT_NAME=aubio -Oz --bind")
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build)
+add_subdirectory(cmake/aubio)
+add_subdirectory(cmake/aubio.esm)

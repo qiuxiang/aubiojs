@@ -24,7 +24,7 @@ it("pitch detection", async () => {
 it("tempo detection", async () => {
   const { Tempo } = await aubio();
   const [sampleRate, data] = await getAudioData(
-    "https://file-examples-com.github.io/uploads/2017/11/file_example_WAV_1MG.wav"
+    "https://file-examples.com/storage/fe64bbb60e62cc956a036bf/2017/11/file_example_WAV_1MG.wav"
   );
   const bufferSize = 1024;
   const tempo = new Tempo(bufferSize, bufferSize / 8, sampleRate);

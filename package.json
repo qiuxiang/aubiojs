@@ -5,7 +5,10 @@
   "types": "index.d.ts",
   "files": [
     "index.d.ts",
-    "build/aubio.js"
+    "build/aubio.js",
+    "build/aubio.wasm",
+    "build/aubio.esm.js",
+    "build/aubio.esm.wasm"
   ],
   "scripts": {
     "build": "export EM_NODE_JS=node && emcmake cmake -Bbuild -H. && make -Cbuild -j",
