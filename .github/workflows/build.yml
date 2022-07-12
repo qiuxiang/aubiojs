@@ -12,7 +12,7 @@ jobs:
           git submodule update
           npm i
           npm run build
-          cp build/aubio.js examples/
+          cp build/aubio.* examples/
           sed -i -r 's/..\/build\///' examples/*.html
       - uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
