@@ -13,7 +13,7 @@ jobs:
           npm i
           npm run build
           cp build/aubio.* examples/
-          sed -i -r 's/..\/build\///' examples/*.html
+          sed -i -r 's/..\/build/./' examples/*.html
       - uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: gh-pages
