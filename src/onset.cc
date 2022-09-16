@@ -107,7 +107,7 @@ public:
     return aubio_onset_set_default_parameters(aubio_onset);
   }
 
-  reset()
+  void reset()
   {
     aubio_onset_reset(aubio_onset);
   }
