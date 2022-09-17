@@ -13,8 +13,10 @@
       crossorigin="anonymous"
       controls
     ></audio>
-    <script src="../build/aubio.js"></script>
-    <script>
+    <script type='module' src="../build/aubio.js"></script>
+    <script type='module'>
+      import aubio  from '../build/aubio.js'; 
+
       let audioContext, scriptProcessor, audioSource;
       const audio = document.querySelector("audio");
       audio.addEventListener("play", run);
