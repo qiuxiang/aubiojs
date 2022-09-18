@@ -37,7 +37,7 @@ public:
 
   float getLastMs() { return aubio_onset_get_last_ms(aubio_onset); }
 
-  int setAwhitening(boolean enable)
+  int setAwhitening(val enable)
   {
     return aubio_onset_set_awhitening(aubio_onset, enable.as<int>());
   }
@@ -47,7 +47,7 @@ public:
     return aubio_onset_get_awhitening(aubio_onset);
   }
 
-  int setCompression(boolean enable)
+  int setCompression(val enable)
   {
     return aubio_onset_set_compression(aubio_onset, enable.as<int>());
   }
@@ -108,9 +108,9 @@ public:
 
   float getDelayMs() { return aubio_onset_get_delay_ms(aubio_onset); }
 
-  int setDefaultParameters()
+  int setDefaultParameters(val mode)
   {
-    return aubio_onset_set_default_parameters(aubio_onset);
+    return aubio_onset_set_default_parameters(aubio_onset, mode.as<char *>);
   }
 
   void reset()
