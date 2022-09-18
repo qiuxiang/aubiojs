@@ -253,7 +253,7 @@ declare type Aubio = {
   };
   Onset: {
     /**
-     * Tempo detection
+     * Onset detection
      *
      * @param method - pitch detection algorithm
      * @param bufferSize - length of FFT

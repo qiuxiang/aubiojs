@@ -75,6 +75,12 @@ public:
 
   float getThreshold() { return aubio_onset_get_threshold(aubio_onset); }
 
+  int setMinioi(val minioi) { return aubio_onset_set_minioi(aubio_onset, minioi.as<int>()); }
+
+  int setMinioiS(val minioi) { return aubio_onset_set_minioi_s(aubio_onset, minioi.as<float>()); }
+
+  int setMinioiMs(val minioi) { return aubio_onset_set_minioi_ms(aubio_onset, minioi.as<float>()); }
+
   int getMinioi() { return aubio_onset_get_minioi(aubio_onset); }
 
   float getMinioiS() { return aubio_onset_get_minioi_s(aubio_onset); }
@@ -83,7 +89,7 @@ public:
 
   int setDelay(val delay)
   {
-    return aubio_onset_set_delay(aubio_onset, delay.as<float>());
+    return aubio_onset_set_delay(aubio_onset, delay.as<int>());
   }
 
   int setDelayS(val delay)

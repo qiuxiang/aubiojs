@@ -27,8 +27,8 @@
         audioContext = new (AudioContext || webkitAudioContext)();
         scriptProcessor = audioContext.createScriptProcessor(512, 1, 1);
         scriptProcessor.connect(audioContext.destination);
-        aubio().then(({ Onset }) => {
-          const onset = new Onset(
+        aubio().then((e) => {
+          const onset = new e.Onset(
             scriptProcessor.bufferSize * 4,
             scriptProcessor.bufferSize,
             audioContext.sampleRate
