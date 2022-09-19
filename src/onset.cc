@@ -108,11 +108,6 @@ public:
 
   float getDelayMs() { return aubio_onset_get_delay_ms(aubio_onset); }
 
-  int setDefaultParameters(val mode)
-  {
-    return aubio_onset_set_default_parameters(aubio_onset, mode.as<char *>);
-  }
-
   void reset()
   {
     aubio_onset_reset(aubio_onset);
@@ -154,6 +149,5 @@ EMSCRIPTEN_BINDINGS(Onset)
       .function("getDelay", &Onset::getDelay)
       .function("getDelayS", &Onset::getDelayS)
       .function("getDelayMs", &Onset::getDelayMs)
-      .function("setDefaultParameters", &Onset::setDefaultParameters)
       .function("reset", &Onset::reset);
 }

@@ -12,6 +12,7 @@ set(source_files
   ${PROJECT_SOURCE_DIR}/aubio/src/pitch/pitchyin.c
   ${PROJECT_SOURCE_DIR}/aubio/src/pitch/pitchyinfast.c
   ${PROJECT_SOURCE_DIR}/aubio/src/pitch/pitchyinfft.c
+  ${PROJECT_SOURCE_DIR}/aubio/src/spectral/awhitening.c
   ${PROJECT_SOURCE_DIR}/aubio/src/spectral/fft.c
   ${PROJECT_SOURCE_DIR}/aubio/src/spectral/ooura_fft8g.c
   ${PROJECT_SOURCE_DIR}/aubio/src/spectral/phasevoc.c
