@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.6)
 project(aubiojs)
 
 set(source_files
+  ${PROJECT_SOURCE_DIR}/aubio/src/onset/onset.c
   ${PROJECT_SOURCE_DIR}/aubio/src/onset/peakpicker.c
   ${PROJECT_SOURCE_DIR}/aubio/src/pitch/pitch.c
   ${PROJECT_SOURCE_DIR}/aubio/src/pitch/pitchfcomb.c
@@ -11,6 +12,7 @@ set(source_files
   ${PROJECT_SOURCE_DIR}/aubio/src/pitch/pitchyin.c
   ${PROJECT_SOURCE_DIR}/aubio/src/pitch/pitchyinfast.c
   ${PROJECT_SOURCE_DIR}/aubio/src/pitch/pitchyinfft.c
+  ${PROJECT_SOURCE_DIR}/aubio/src/spectral/awhitening.c
   ${PROJECT_SOURCE_DIR}/aubio/src/spectral/fft.c
   ${PROJECT_SOURCE_DIR}/aubio/src/spectral/ooura_fft8g.c
   ${PROJECT_SOURCE_DIR}/aubio/src/spectral/phasevoc.c
@@ -29,7 +31,8 @@ set(source_files
   ${PROJECT_SOURCE_DIR}/aubio/src/lvec.c
   ${PROJECT_SOURCE_DIR}/aubio/src/mathutils.c
   ${PROJECT_SOURCE_DIR}/src/tempo.cc
-  ${PROJECT_SOURCE_DIR}/src/pitch.cc)
+  ${PROJECT_SOURCE_DIR}/src/pitch.cc
+  ${PROJECT_SOURCE_DIR}/src/onset.cc)
 
 include_directories(src)
 include_directories(aubio/src)

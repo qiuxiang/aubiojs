@@ -96,6 +96,133 @@ declare class Tempo {
   getConfidence(): number;
 }
 
+declare class Onset {
+  /**
+   * execute onset detection
+   */
+  do(buffer: InputBuffer): number;
+
+  /**
+   * get the time of the latest onset detected, in samples
+   */
+  getLast(): number;
+
+  /**
+   * get the time of the latest onset detected, in seconds
+   */
+  getLastS(): number;
+
+  /**
+   * get the time of the latest onset detected, in milliseconds
+   */
+  getLastMs(): number;
+
+  /**
+   * set onset detection adaptive whitening
+   */
+
+  setAwhitening(enable: boolean):number;
+  /**
+   * get onset detection adaptive whitening
+   */
+  getAwhitening():number;
+
+  /**
+   * set or disable log compression
+   */
+  setCompression(enable: boolean):number;
+
+  /**
+   * get onset detection log compression
+   */
+  getCompression(): number;
+
+  /**
+   * set onset detection silence threshold
+   */
+  setSilence(silence: number):number;
+
+  /**
+   * get onset detection silence threshold
+   */
+  getSilence(): number;
+
+  /**
+   * get onset detection function
+   */
+  getDescriptor(): number;
+
+  /**
+   * get thresholded onset detection function
+   */
+  getThresholdedDescriptor(): number;
+
+  /**
+   * set onset detection peak picking threshold
+   */
+  setThreshold(threshold: number):number;
+
+  /**
+   * get onset peak picking threshold
+   */
+  getThreshold(): number;
+
+  /**
+   * set minimum inter onset interval in samples
+   */
+  getMinioi(): number;
+
+  /**
+   * set minimum inter onset interval in seconds
+   */
+  getMinioiS(): number;
+
+  /**
+   * set minimum inter onset interval in milliseconds
+   */
+  getMinioiMs(): number;
+
+  /**
+   * set delay in samples
+   */
+  setDelay(delay: number): number;
+
+  /**
+   * set delay in seconds
+   */
+  setDelayS(delay: number): number;
+
+  /**
+   * set delay in milliseconds
+   */
+  setDelayMs(delay: number): number;
+
+  /**
+   * get delay in samples
+   */
+  getDelay(): number;
+
+  /**
+   * 	get delay in seconds
+   */
+  getDelayS(): number;
+
+  /**
+   * get delay in milliseconds
+   */
+  getDelayMs(): number;
+
+  /**
+   * set default parameters
+   */
+  setDefaultParameters(): number;
+
+  /**
+   * reset onset detection
+   */
+  reset(): void;
+}
+
 declare type Aubio = {
   Pitch: {
     /**
@@ -123,6 +250,17 @@ declare type Aubio = {
      * @param sampleRate - sampling rate of the signal to analyze
      */
     new (bufferSize: number, hopSize: number, sampleRate: number): Tempo;
+  };
+  Onset: {
+    /**
+     * Onset detection
+     *
+     * @param method - pitch detection algorithm
+     * @param bufferSize - length of FFT
+     * @param hopSize - number of frames between two consecutive runs
+     * @param sampleRate - sampling rate of the signal to analyze
+     */
+     new (bufferSize: number, hopSize: number, sampleRate: number): Onset;
   };
 };
 

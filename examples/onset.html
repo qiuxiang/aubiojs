@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Aubio Onset</title>
+  </head>
+  <body>
+    <div class="attacks">
+      <div id="last-attack">0</div>
+    </div>
+    <audio
+      src="http://mr1.doubanio.com/e586b3b26b25c3b6b1590061a462f2e0/0/fm/song/p291930_128k.mp4"
+      crossorigin="anonymous"
+      controls
+    ></audio>
+    <script type='module' src="../build/aubio.js"></script>
+    <script type='module'>
+      import aubio  from '../build/aubio.js'; 
+
+      let audioContext, scriptProcessor, audioSource;
+      const audio = document.querySelector("audio");
+      audio.addEventListener("play", run);
+
+      function run() {
+        if (audioContext) return;
+
+        audioContext = new (AudioContext || webkitAudioContext)();
+        scriptProcessor = audioContext.createScriptProcessor(512, 1, 1);
+        scriptProcessor.connect(audioContext.destination);
+        aubio().then((e) => {
+          const onset = new e.Onset(
+            "default",
+            scriptProcessor.bufferSize,
+            scriptProcessor.bufferSize / 8,
+            audioContext.sampleRate
+          );
+          scriptProcessor.addEventListener("audioprocess", function (event) {
+            if (onset.do(event.inputBuffer.getChannelData(0))) {
+              console.log("threshold", onset.getThreshold());
+              attack(onset.getLast());
+            }
+          });
+        });
+
+        audioSource =
+          audioSource || audioContext.createMediaElementSource(audio);
+        audioSource.connect(scriptProcessor);
+        audioSource.connect(audioContext.destination);
+
+        const $attack = document.querySelector("#last-attack");
+
+        function attack(time) {
+          $attack.innerHTML = parseFloat(time);
+        }
+      }
+    </script>
+  </body>
+</html>
