@@ -13,9 +13,8 @@
       crossorigin="anonymous"
       controls
     ></audio>
-    <script type='module' src="./aubio.js"></script>
     <script type='module'>
-      import aubio  from './aubio.js'; 
+      import aubio  from './aubio.esm.js'; 
 
       let audioContext, scriptProcessor, audioSource;
       const audio = document.querySelector("audio");
@@ -30,13 +29,12 @@
         aubio().then((e) => {
           const onset = new e.Onset(
             "default",
+            scriptProcessor.bufferSize * 8,
             scriptProcessor.bufferSize,
-            scriptProcessor.bufferSize / 8,
             audioContext.sampleRate
           );
           scriptProcessor.addEventListener("audioprocess", function (event) {
             if (onset.do(event.inputBuffer.getChannelData(0))) {
-              console.log("threshold", onset.getThreshold());
               attack(onset.getLast());
             }
           });
