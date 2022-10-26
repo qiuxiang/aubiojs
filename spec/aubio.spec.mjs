@@ -37,3 +37,18 @@ it("tempo detection", async () => {
     }
   }
 });
+
+it("onset detection", async () => {
+  const { Onset } = await aubio();
+  const [sampleRate, data] = await getAudioData(
+    "https://www.soundjay.com/buttons/beep-01a.wav"
+  );
+  const bufferSize = 512;
+  const onset = new Onset("default", bufferSize * 4, bufferSize, sampleRate);
+  for (let i = 0; i < data.length - bufferSize; i += bufferSize) {
+    if (onset.do(data.slice(i, i + bufferSize))){
+      const attack = onset.getLast();
+      console.log(`${attack.toFixed(0)}`);
+    }
+  }
+});

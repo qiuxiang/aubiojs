@@ -67,8 +67,8 @@
         aubio().then(({ Pitch }) => {
           const pitchDetector = new Pitch(
             "default",
+            scriptProcessor.bufferSize * 8,
             scriptProcessor.bufferSize,
-            scriptProcessor.bufferSize / 8,
             audioContext.sampleRate
           );
           scriptProcessor.addEventListener("audioprocess", function (event) {

@@ -7,7 +7,7 @@ class Pitch {
 public:
   Pitch(std::string method, uint_t buf_size, uint_t hop_size,
         uint_t sample_rate) {
-    buffer = new_fvec(buf_size);
+    buffer = new_fvec(hop_size);
     aubio_pitch =
         new_aubio_pitch(method.c_str(), buf_size, hop_size, sample_rate);
   }

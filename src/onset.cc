@@ -9,7 +9,7 @@ public:
   Onset(std::string method, int buf_size, int hop_size,
         int sample_rate)
   {
-    buffer = new_fvec(buf_size);
+    buffer = new_fvec(hop_size);
     aubio_onset =
         new_aubio_onset(method.c_str(), buf_size, hop_size, sample_rate);
   }
