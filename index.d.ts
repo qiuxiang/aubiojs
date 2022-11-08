@@ -1,4 +1,4 @@
-type InputBuffer = Float32Array | number[];
+export type InputBuffer = Float32Array | number[];
 
 /**
  * default : use the default method
@@ -62,7 +62,7 @@ type InputBuffer = Float32Array | number[];
  * systems](http://aubio.org/phd/), Chapter 3, Pitch Analysis, PhD thesis,
  * Centre for Digital music, Queen Mary University of London, London, UK, 2006.
  */
-declare type PitchMethod =
+export declare type PitchMethod =
   | "default"
   | "yin"
   | "mcomb"
@@ -72,14 +72,14 @@ declare type PitchMethod =
   | "yinfast"
   | "specacf";
 
-declare class Pitch {
+export declare class Pitch {
   /**
    * execute pitch detection on an input signal frame
    */
   do(buffer: InputBuffer): number;
 }
 
-declare class Tempo {
+export declare class Tempo {
   /**
    * execute tempo detection
    */
@@ -96,7 +96,7 @@ declare class Tempo {
   getConfidence(): number;
 }
 
-declare class Onset {
+export declare class Onset {
   /**
    * execute onset detection
    */
@@ -223,7 +223,7 @@ declare class Onset {
   reset(): void;
 }
 
-declare type Aubio = {
+export declare type Aubio = {
   Pitch: {
     /**
      * Pitch detection
