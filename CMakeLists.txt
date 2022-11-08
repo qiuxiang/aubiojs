@@ -38,7 +38,7 @@ include_directories(src)
 include_directories(aubio/src)
 add_definitions(-DHAVE_CONFIG_H)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -sMODULARIZE=1 -sEXPORT_NAME=aubio -Oz --bind")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -sMODULARIZE=1 -s SINGLE_FILE=1 -sEXPORT_NAME=aubio -Oz --bind")
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build)
 add_subdirectory(cmake/aubio)
 add_subdirectory(cmake/aubio.esm)
