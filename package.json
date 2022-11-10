@@ -2,16 +2,13 @@
   "name": "aubiojs",
   "version": "0.0.0",
   "main": "build/aubio.js",
-  "types": "index.d.ts",
+  "module": "build/aubio.esm.js",
   "files": [
-    "index.d.ts",
     "build/aubio.js",
-    "build/aubio.wasm",
-    "build/aubio.esm.js",
-    "build/aubio.esm.wasm"
+    "build/aubio.esm.js"
   ],
   "scripts": {
-    "build": "export EM_NODE_JS=node && emcmake cmake -Bbuild -H. && make -Cbuild -j",
+    "build": "export NODE_PATH=$(npm root -g) && emcmake cmake -Bbuild -H. && make -Cbuild -j",
     "test": "jasmine"
   },
   "devDependencies": {
