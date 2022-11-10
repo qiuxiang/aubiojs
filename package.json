@@ -2,16 +2,17 @@
   "name": "aubiojs",
   "version": "0.0.0",
   "main": "build/aubio.js",
-  "module": "build/aubio.esm.js",
+  "module": "build/aubio.mjs",
   "files": [
     "build/aubio.js",
-    "build/aubio.esm.js"
+    "build/aubio.mjs"
   ],
   "scripts": {
-    "build": "export NODE_PATH=$(npm root -g) && emcmake cmake -Bbuild -H. && make -Cbuild -j",
+    "build": "export NODE_PATH=$(npm root -g) && emcmake cmake -Bbuild -H. && make -Cbuild -j && esbuild build/aubio.js --minify --format=esm --outfile=build/aubio.mjs && esbuild build/aubio.js --minify --format=cjs --allow-overwrite --outfile=build/aubio.js",
     "test": "jasmine"
   },
   "devDependencies": {
+    "esbuild": "^0.15.13",
     "jasmine": "^3.9.0",
     "node-fetch": "^3.0.0",
     "wav-decoder": "^1.3.0"

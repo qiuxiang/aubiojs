@@ -36,5 +36,6 @@ include_directories(aubio/src)
 add_definitions(-DHAVE_CONFIG_H)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} \
   -sEXPORTED_FUNCTIONS=[_aubio_db_spl,_new_fvec] \
-  -sENVIRONMENT=worker -sMODULARIZE=1 -sSINGLE_FILE=1 -Oz")
+  --post-js ${PROJECT_SOURCE_DIR}/post.js \
+  -sENVIRONMENT=web,worker -sSINGLE_FILE=1 -Oz")
 add_executable(aubio ${source_files})
