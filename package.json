@@ -12,6 +12,7 @@
     "test": "jasmine"
   },
   "devDependencies": {
+    "@types/emscripten": "^1.39.6",
     "esbuild": "^0.15.13",
     "jasmine": "^3.9.0",
     "node-fetch": "^3.0.0",

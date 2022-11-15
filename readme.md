@@ -42,6 +42,8 @@ const bpm = tempo.getBpm();
 This project uses [emscripten](https://github.com/kripken/emscripten) to compile aubio, make sure you have installed.
 
 ```
+git submodule init
+git submodule update
 npm run build
 ```
 
